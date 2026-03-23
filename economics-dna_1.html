@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Economics DNA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050810;
+  --bg2: #090d1a;
+  --bg3: #0d1424;
+  --blue: #1a6cf6;
+  --blue2: #2d7fff;
+  --blue3: #0a3d8f;
+  --blue-dim: rgba(26,108,246,0.15);
+  --blue-glow: rgba(26,108,246,0.35);
+  --text: #e8edf5;
+  --text2: #8a98b4;
+  --text3: #4a5a78;
+  --border: rgba(26,108,246,0.2);
+  --border2: rgba(26,108,246,0.08);
+  --accent: #00d4ff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Animated background grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,108,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,108,246,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 60% 20%, rgba(26,108,246,0.07) 0%, transparent 50%),
+              radial-gradient(ellipse at 20% 80%, rgba(0,212,255,0.04) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+  animation: bgPulse 12s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+/* ========== INTRO SCREEN ========== */
+#intro {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.intro-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--blue2);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.intro-eyebrow::before, .intro-eyebrow::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue));
+}
+.intro-eyebrow::after { background: linear-gradient(90deg, var(--blue), transparent); }
+
+h1.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(52px, 10vw, 110px);
+  line-height: 0.92;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+h1.hero-title span {
+  color: var(--blue2);
+  font-style: italic;
+}
+
+.hero-sub {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(18px, 3vw, 28px);
+  font-style: italic;
+  color: var(--text2);
+  margin-bottom: 36px;
+  max-width: 560px;
+}
+
+.hero-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text2);
+  max-width: 520px;
+  margin-bottom: 56px;
+}
+
+.axis-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 600px;
+  margin-bottom: 56px;
+}
+
+.axis-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue2);
+  border: 1px solid var(--border);
+  background: var(--blue-dim);
+  padding: 6px 14px;
+}
+
+.btn-start {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  padding: 18px 52px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-start::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.btn-start:hover::before { transform: translateX(100%); }
+.btn-start:hover { background: var(--blue2); box-shadow: 0 0 32px var(--blue-glow); }
+
+.question-count-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 16px;
+  letter-spacing: 0.1em;
+}
+
+/* ========== QUIZ SCREEN ========== */
+#quiz {
+  display: none;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 40px 24px 80px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border2);
+}
+
+.quiz-logo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue2);
+}
+
+.quiz-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-progress-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  min-width: 60px;
+  text-align: right;
+}
+
+.progress-bar-track {
+  width: 160px;
+  height: 2px;
+  background: rgba(26,108,246,0.15);
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue3), var(--blue2));
+  transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 8px var(--blue);
+}
+
+/* Question Card */
+.question-card {
+  animation: fadeInUp 0.4s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.question-category {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--blue2);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.question-category::before {
+  content: '';
+  width: 16px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.question-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 4vw, 34px);
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 48px;
+  font-weight: 400;
+}
+
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option-btn {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 20px 24px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.option-btn::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--blue);
+  transform: scaleY(0);
+  transition: transform 0.2s;
+}
+
+.option-letter {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--blue2);
+  letter-spacing: 0.1em;
+  min-width: 22px;
+  margin-top: 2px;
+  opacity: 0.7;
+}
+
+.option-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text2);
+  flex: 1;
+}
+
+.option-btn:hover {
+  background: var(--bg3);
+  border-color: var(--blue);
+  color: var(--text);
+}
+
+.option-btn:hover::before { transform: scaleY(1); }
+.option-btn:hover .option-text { color: var(--text); }
+.option-btn:hover .option-letter { opacity: 1; }
+
+.option-btn.selected {
+  background: var(--blue-dim);
+  border-color: var(--blue2);
+  box-shadow: inset 0 0 0 0 transparent, 0 0 16px rgba(26,108,246,0.2);
+}
+
+.option-btn.selected::before { transform: scaleY(1); }
+.option-btn.selected .option-text { color: var(--text); }
+.option-btn.selected .option-letter { opacity: 1; color: var(--accent); }
+
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border2);
+}
+
+.btn-prev {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-prev:hover { border-color: var(--text3); color: var(--text2); }
+.btn-prev:disabled { opacity: 0.2; cursor: default; }
+
+.btn-next {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--blue);
+  border: 1px solid transparent;
+  color: #fff;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.btn-next.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.btn-next.active:hover {
+  background: var(--blue2);
+  box-shadow: 0 0 20px var(--blue-glow);
+}
+
+/* ========== RESULTS SCREEN ========== */
+#results {
+  display: none;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 60px 24px 100px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.results-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--blue2);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.results-eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.results-main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 7vw, 72px);
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.results-main-title .school-name {
+  color: var(--blue2);
+  font-style: italic;
+}
+
+.results-tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(14px, 2vw, 18px);
+  color: var(--text2);
+  margin-bottom: 16px;
+}
+
+.results-school-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text2);
+  max-width: 600px;
+  margin-bottom: 56px;
+  padding: 24px;
+  border-left: 2px solid var(--blue);
+  background: var(--bg2);
+}
+
+.axes-section {
+  margin-bottom: 56px;
+}
+
+.axes-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 28px;
+}
+
+.axis-row {
+  margin-bottom: 28px;
+}
+
+.axis-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.axis-label-left, .axis-label-right {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  transition: color 0.3s;
+}
+
+.axis-label-left.active { color: var(--blue2); font-weight: 500; }
+.axis-label-right.active { color: var(--blue2); font-weight: 500; }
+
+.axis-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 6px;
+  opacity: 0.6;
+}
+
+.axis-track {
+  height: 4px;
+  background: rgba(26,108,246,0.1);
+  position: relative;
+}
+
+.axis-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: linear-gradient(90deg, var(--blue3), var(--blue2));
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 8px var(--blue);
+}
+
+.axis-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: var(--blue2);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--blue);
+  transition: left 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Schools Breakdown */
+.schools-section {
+  margin-bottom: 56px;
+}
+
+.schools-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+}
+
+.schools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border2);
+  border: 1px solid var(--border2);
+}
+
+.school-bar-item {
+  background: var(--bg2);
+  padding: 20px;
+}
+
+.school-bar-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text2);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.school-bar-track {
+  height: 3px;
+  background: rgba(26,108,246,0.1);
+  margin-bottom: 6px;
+}
+
+.school-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue3), var(--blue));
+  transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+.school-bar-pct {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.btn-retake {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 16px 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-retake:hover {
+  border-color: var(--blue2);
+  color: var(--blue2);
+  box-shadow: 0 0 16px var(--blue-glow);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .schools-grid { grid-template-columns: 1fr; }
+  .progress-bar-track { width: 100px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== INTRO ========== -->
+<section id="intro">
+  <div class="intro-eyebrow">Economic &amp; Political Philosophy</div>
+  <h1 class="hero-title">Your<br><span>Economics</span><br>DNA</h1>
+  <p class="hero-sub">Discover the schools of thought that shape how you see the world.</p>
+  <p class="hero-desc">18 carefully crafted questions mapping your economic instincts across five axes — from market structure to the nature of freedom. Not left vs. right. The full ideological spectrum.</p>
+  <div class="axis-preview">
+    <span class="axis-tag">Free Market ↔ Central Planning</span>
+    <span class="axis-tag">Individual ↔ Collective</span>
+    <span class="axis-tag">Tradition ↔ Progress</span>
+    <span class="axis-tag">Growth ↔ Sustainability</span>
+    <span class="axis-tag">Nation ↔ Globalism</span>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">Begin →</button>
+  <p class="question-count-note">// 18 questions · ~5 minutes</p>
+</section>
+
+<!-- ========== QUIZ ========== -->
+<section id="quiz">
+  <div class="quiz-header">
+    <div class="quiz-logo">Economics DNA</div>
+    <div class="quiz-progress-wrap">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="quiz-progress-num" id="progressNum">1 / 18</div>
+    </div>
+  </div>
+  <div id="questionArea"></div>
+  <div class="quiz-nav">
+    <button class="btn-prev" id="btnPrev" onclick="prevQuestion()" disabled>← Back</button>
+    <button class="btn-next" id="btnNext" onclick="nextQuestion()">Continue →</button>
+  </div>
+</section>
+
+<!-- ========== RESULTS ========== -->
+<section id="results">
+  <div class="results-eyebrow">Your Profile</div>
+  <h2 class="results-main-title">You are a<br><span class="school-name" id="resultTitle">—</span></h2>
+  <p class="results-tagline" id="resultTagline">—</p>
+  <div class="results-school-desc" id="resultDesc">—</div>
+
+  <div class="axes-section">
+    <div class="axes-title">// Your Economic Axes</div>
+    <div id="axesDisplay"></div>
+  </div>
+
+  <div class="schools-section">
+    <div class="schools-title">// School Affinity Breakdown</div>
+    <div class="schools-grid" id="schoolsGrid"></div>
+  </div>
+
+  <button class="btn-retake" onclick="retake()">↺ Retake Quiz</button>
+</section>
+
+<script>
+// ==================== QUESTIONS ====================
+const questions = [
+  {
+    id: 1,
+    category: "Market Structure",
+    text: "When a corporation grows so large it dominates an entire industry, the government should:",
+    options: [
+      { text: "Break it up or heavily regulate it — monopolies destroy competition and harm consumers.", axes: { market: -2, individual: 0, tradition: 0, growth: 0, nation: 1 } },
+      { text: "Leave it alone. If it got big, it earned it. Regulation distorts incentives.", axes: { market: 2, individual: 1, tradition: 1, growth: 1, nation: -1 } },
+      { text: "Nationalize key sectors — strategic industries should serve the public, not shareholders.", axes: { market: -3, individual: -2, tradition: 0, growth: -1, nation: 2 } },
+      { text: "Use antitrust selectively while encouraging domestic dominance in global competition.", axes: { market: 0, individual: 0, tradition: 1, growth: 1, nation: 3 } }
+    ]
+  },
+  {
+    id: 2,
+    category: "Labor & Work",
+    text: "Which statement best reflects your view on wages?",
+    options: [
+      { text: "Wages should be set entirely by supply and demand between employer and employee.", axes: { market: 3, individual: 2, tradition: 0, growth: 1, nation: -1 } },
+      { text: "A strong minimum wage is a moral floor — no one who works full-time should live in poverty.", axes: { market: -2, individual: 0, tradition: 0, growth: 0, nation: 1 } },
+      { text: "Workers should own the firms they work in — profit belongs to those who create it.", axes: { market: -1, individual: 2, tradition: -1, growth: -1, nation: 0 } },
+      { text: "Wages should reflect national productivity norms — neither race to the bottom nor artificial floors.", axes: { market: 0, individual: 0, tradition: 2, growth: 0, nation: 2 } }
+    ]
+  },
+  {
+    id: 3,
+    category: "Taxation",
+    text: "What is the ideal philosophy behind taxation?",
+    options: [
+      { text: "Taxation is theft. The state should be funded only by voluntary means or minimal flat taxes.", axes: { market: 3, individual: 3, tradition: 0, growth: 1, nation: -2 } },
+      { text: "Progressive taxation is just — those who benefit most from society should contribute most.", axes: { market: -2, individual: -1, tradition: -1, growth: 0, nation: 1 } },
+      { text: "Tax capital and land heavily, but not productive labor — wealth should circulate, not accumulate.", axes: { market: -1, individual: 1, tradition: -1, growth: -1, nation: 1 } },
+      { text: "Moderate flat taxes fund national infrastructure — simplicity and predictability drive prosperity.", axes: { market: 1, individual: 1, tradition: 2, growth: 1, nation: 2 } }
+    ]
+  },
+  {
+    id: 4,
+    category: "Trade & Globalization",
+    text: "On international trade, which position is closest to yours?",
+    options: [
+      { text: "Free trade is universally beneficial — comparative advantage enriches all nations.", axes: { market: 3, individual: 0, tradition: -1, growth: 2, nation: -3 } },
+      { text: "Trade is fine, but not at the expense of workers. We need fair trade, not just free trade.", axes: { market: -1, individual: 0, tradition: 0, growth: 0, nation: 1 } },
+      { text: "Economic nationalism comes first — strategic tariffs protect industries vital to sovereignty.", axes: { market: -1, individual: 0, tradition: 2, growth: 0, nation: 3 } },
+      { text: "Global supply chains exploit the global south. We need deglobalization and local economies.", axes: { market: -2, individual: 1, tradition: 1, growth: -2, nation: 2 } }
+    ]
+  },
+  {
+    id: 5,
+    category: "Property & Ownership",
+    text: "What is the most legitimate foundation of private property?",
+    options: [
+      { text: "Labor creates ownership — you own what you make or improve with your own hands (Lockean).", axes: { market: 2, individual: 3, tradition: 1, growth: 0, nation: 0 } },
+      { text: "Property is a social convention. Society grants it and can revise it for public benefit.", axes: { market: -2, individual: -2, tradition: -1, growth: 0, nation: 1 } },
+      { text: "No one owns the earth. Land value should be taxed entirely — only improvements belong to individuals.", axes: { market: 0, individual: 2, tradition: -1, growth: -1, nation: 1 } },
+      { text: "Private property is the foundation of civilization and must be protected absolutely.", axes: { market: 2, individual: 2, tradition: 3, growth: 1, nation: 1 } }
+    ]
+  },
+  {
+    id: 6,
+    category: "Money & Central Banks",
+    text: "How should the money supply be managed?",
+    options: [
+      { text: "Central banks should be abolished. Return to gold or commodity-backed money to prevent inflation.", axes: { market: 3, individual: 2, tradition: 2, growth: -1, nation: 1 } },
+      { text: "The central bank should prioritize employment and growth, not just price stability.", axes: { market: -1, individual: 0, tradition: -1, growth: 2, nation: 1 } },
+      { text: "The state should directly control money creation to fund public investment (MMT).", axes: { market: -3, individual: -1, tradition: -1, growth: 2, nation: 2 } },
+      { text: "Rules-based monetary policy with strict inflation targets — predictability above all.", axes: { market: 1, individual: 0, tradition: 1, growth: 0, nation: 0 } }
+    ]
+  },
+  {
+    id: 7,
+    category: "Inequality",
+    text: "Economic inequality in modern societies is primarily:",
+    options: [
+      { text: "The natural result of differing talents and choices — not a problem to be engineered away.", axes: { market: 3, individual: 3, tradition: 1, growth: 1, nation: 0 } },
+      { text: "A structural failure — it destroys social mobility and requires redistribution to fix.", axes: { market: -2, individual: -1, tradition: -1, growth: 0, nation: 1 } },
+      { text: "The result of financial capitalism — a system rigged by those who own capital against those who work.", axes: { market: -3, individual: 1, tradition: -1, growth: -1, nation: 0 } },
+      { text: "A symptom of cultural decay — restore family, community, and craft before taxing the rich.", axes: { market: 1, individual: 1, tradition: 3, growth: -1, nation: 2 } }
+    ]
+  },
+  {
+    id: 8,
+    category: "The Role of the State",
+    text: "The ideal economic role of the state is to:",
+    options: [
+      { text: "Protect contracts and property, enforce law — nothing more. The market solves the rest.", axes: { market: 3, individual: 2, tradition: 1, growth: 1, nation: -1 } },
+      { text: "Actively shape markets, fund R&D, build infrastructure, and ensure public goods exist.", axes: { market: -1, individual: 0, tradition: 0, growth: 2, nation: 1 } },
+      { text: "Own the commanding heights — energy, finance, healthcare — with democratic accountability.", axes: { market: -3, individual: -2, tradition: 0, growth: 0, nation: 2 } },
+      { text: "Coordinate the national economy toward strategic long-term goals — like East Asian development states.", axes: { market: -1, individual: -1, tradition: 1, growth: 3, nation: 3 } }
+    ]
+  },
+  {
+    id: 9,
+    category: "Environment & Growth",
+    text: "How should economic policy handle environmental limits?",
+    options: [
+      { text: "Property rights and markets solve environmental problems better than regulation.", axes: { market: 3, individual: 1, tradition: 0, growth: 2, nation: -1 } },
+      { text: "Carbon taxes and green investment — price the externalities and the market will adjust.", axes: { market: 1, individual: 0, tradition: -1, growth: 1, nation: 0 } },
+      { text: "GDP growth is the problem. We need a planned degrowth economy within planetary boundaries.", axes: { market: -3, individual: 0, tradition: 1, growth: -3, nation: 1 } },
+      { text: "Nuclear power, industrial technology, and innovation will solve these problems — accelerate, don't retreat.", axes: { market: 1, individual: 1, tradition: -1, growth: 3, nation: 1 } }
+    ]
+  },
+  {
+    id: 10,
+    category: "Finance & Banking",
+    text: "Your view on modern financial capitalism:",
+    options: [
+      { text: "Financial markets efficiently allocate capital to its best use — deregulate and let them work.", axes: { market: 3, individual: 1, tradition: -1, growth: 2, nation: -2 } },
+      { text: "Finance has grown too large and parasitic — it extracts value rather than creating it.", axes: { market: -2, individual: 1, tradition: 1, growth: -1, nation: 1 } },
+      { text: "Public banking and credit unions should replace private banks for most ordinary transactions.", axes: { market: -2, individual: 0, tradition: 0, growth: 0, nation: 2 } },
+      { text: "Crypto and decentralized finance offer a path to money free from both state and banker control.", axes: { market: 2, individual: 3, tradition: -2, growth: 1, nation: -3 } }
+    ]
+  },
+  {
+    id: 11,
+    category: "Education & Human Capital",
+    text: "How should education be organized and funded?",
+    options: [
+      { text: "Fully privatize it — competition produces quality and families should choose what fits their values.", axes: { market: 3, individual: 2, tradition: 1, growth: 1, nation: -1 } },
+      { text: "Universal public education is a collective investment — fund it generously at every level.", axes: { market: -2, individual: -1, tradition: 0, growth: 1, nation: 1 } },
+      { text: "Local and community control over education — not corporate schooling, not federal bureaucracy.", axes: { market: 0, individual: 1, tradition: 3, growth: 0, nation: 2 } },
+      { text: "Vocational apprenticeships and guild-style training deserve the same prestige as universities.", axes: { market: 0, individual: 1, tradition: 2, growth: 1, nation: 2 } }
+    ]
+  },
+  {
+    id: 12,
+    category: "Freedom & Coercion",
+    text: "The most important economic freedom is:",
+    options: [
+      { text: "Freedom from government interference — negative liberty, the right to be left alone.", axes: { market: 3, individual: 3, tradition: 1, growth: 0, nation: -1 } },
+      { text: "Freedom from poverty and insecurity — positive liberty, real capacity to live a dignified life.", axes: { market: -2, individual: -1, tradition: -1, growth: 0, nation: 1 } },
+      { text: "Freedom from exploitation by bosses, landlords, and financiers — economic power corrupts.", axes: { market: -2, individual: 2, tradition: -1, growth: -1, nation: 0 } },
+      { text: "Freedom rooted in community, family, and tradition — rootedness over atomized autonomy.", axes: { market: 0, individual: 0, tradition: 3, growth: -1, nation: 2 } }
+    ]
+  },
+  {
+    id: 13,
+    category: "Immigration & Labor Markets",
+    text: "On immigration's effect on labor markets:",
+    options: [
+      { text: "Open borders — labor should flow freely like capital. Restriction is economic protectionism.", axes: { market: 2, individual: 1, tradition: -2, growth: 1, nation: -3 } },
+      { text: "Managed immigration that protects wages for existing workers, especially the working class.", axes: { market: -1, individual: 0, tradition: 1, growth: 0, nation: 2 } },
+      { text: "Strict limits — mass immigration suppresses wages and destabilizes national culture and cohesion.", axes: { market: -1, individual: 0, tradition: 3, growth: -1, nation: 3 } },
+      { text: "High-skill immigration is fine, but guest-worker programs exploit people without giving them rights.", axes: { market: 0, individual: 1, tradition: 0, growth: 1, nation: 1 } }
+    ]
+  },
+  {
+    id: 14,
+    category: "Technology & Automation",
+    text: "As AI and automation eliminate jobs, society should:",
+    options: [
+      { text: "Do nothing — the market will create new jobs, as it always has. Intervention delays adaptation.", axes: { market: 3, individual: 1, tradition: 0, growth: 3, nation: -1 } },
+      { text: "Institute a Universal Basic Income funded by taxes on automation to share the gains broadly.", axes: { market: -1, individual: 2, tradition: -2, growth: 1, nation: 0 } },
+      { text: "Democratize ownership of AI — worker cooperatives and public trusts should own the technology.", axes: { market: -2, individual: 2, tradition: -1, growth: 0, nation: 1 } },
+      { text: "Slow the deployment of automation — protect meaningful work and human dignity over efficiency.", axes: { market: -1, individual: 0, tradition: 3, growth: -2, nation: 1 } }
+    ]
+  },
+  {
+    id: 15,
+    category: "Healthcare",
+    text: "The best way to organize healthcare is:",
+    options: [
+      { text: "Private markets with insurance and HSAs — competition lowers costs and improves quality.", axes: { market: 3, individual: 2, tradition: 0, growth: 1, nation: -1 } },
+      { text: "Single-payer universal system — healthcare is a right, not a commodity.", axes: { market: -3, individual: -1, tradition: 0, growth: 0, nation: 2 } },
+      { text: "Regulated multi-payer system — preserve choice and competition but guarantee basic coverage.", axes: { market: 1, individual: 1, tradition: 0, growth: 1, nation: 1 } },
+      { text: "Community-based medicine and cooperative clinics — remove profit and bureaucracy both.", axes: { market: -1, individual: 1, tradition: 2, growth: -1, nation: 1 } }
+    ]
+  },
+  {
+    id: 16,
+    category: "Development & Growth",
+    text: "What is the best path to prosperity for a developing nation?",
+    options: [
+      { text: "Follow the Washington Consensus: liberalize, privatize, and integrate into global markets.", axes: { market: 3, individual: 0, tradition: -1, growth: 2, nation: -3 } },
+      { text: "State-led industrial policy — build domestic industry behind protective walls, then liberalize.", axes: { market: -1, individual: -1, tradition: 1, growth: 3, nation: 3 } },
+      { text: "Focus on land reform, debt cancellation, and local food sovereignty first.", axes: { market: -2, individual: 1, tradition: 1, growth: -1, nation: 2 } },
+      { text: "Technology transfer and foreign investment, but retain control of strategic resources.", axes: { market: 0, individual: 0, tradition: 0, growth: 2, nation: 2 } }
+    ]
+  },
+  {
+    id: 17,
+    category: "Class & Society",
+    text: "What is the primary driver of class conflict in modern economies?",
+    options: [
+      { text: "There is no real class conflict — just individuals at different points on a meritocratic curve.", axes: { market: 3, individual: 3, tradition: 0, growth: 1, nation: -1 } },
+      { text: "The bourgeoisie versus the proletariat — those who own capital versus those who sell labor.", axes: { market: -3, individual: 0, tradition: -2, growth: -1, nation: -1 } },
+      { text: "A financial and managerial elite has captured the state and hollowed out the middle class.", axes: { market: -1, individual: 1, tradition: 2, growth: -1, nation: 2 } },
+      { text: "Rent-seeking by landlords and creditors versus productive workers and entrepreneurs alike.", axes: { market: 0, individual: 2, tradition: 0, growth: 0, nation: 1 } }
+    ]
+  },
+  {
+    id: 18,
+    category: "The Future",
+    text: "The economic system most worth building toward is:",
+    options: [
+      { text: "A fully decentralized market order — no central authority, maximum individual sovereignty.", axes: { market: 3, individual: 3, tradition: 0, growth: 1, nation: -3 } },
+      { text: "Democratic socialism — workers own the firms, the state ensures everyone's basic needs.", axes: { market: -3, individual: 1, tradition: -1, growth: 0, nation: 1 } },
+      { text: "National capitalism — strong domestic industry, strong family formation, strong sovereignty.", axes: { market: 0, individual: 0, tradition: 3, growth: 1, nation: 3 } },
+      { text: "Radical localism — small communities, mutual aid, bioregional economies, no megacorporations.", axes: { market: -2, individual: 2, tradition: 2, growth: -2, nation: 1 } }
+    ]
+  }
+];
+
+// ==================== STATE ====================
+let currentQ = 0;
+let answers = new Array(questions.length).fill(null);
+
+// Axes: market (-3 to +3), individual (-3 to +3), tradition (-3 to +3), growth (-3 to +3), nation (-3 to +3)
+// Scores accumulate
+
+function startQuiz() {
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const letters = ['A','B','C','D'];
+  
+  document.getElementById('progressFill').style.width = ((currentQ / questions.length) * 100) + '%';
+  document.getElementById('progressNum').textContent = (currentQ + 1) + ' / ' + questions.length;
+  
+  document.getElementById('btnPrev').disabled = currentQ === 0;
+  
+  const nextBtn = document.getElementById('btnNext');
+  if (answers[currentQ] !== null) {
+    nextBtn.classList.add('active');
+  } else {
+    nextBtn.classList.remove('active');
+  }
+  
+  if (currentQ === questions.length - 1) {
+    nextBtn.textContent = 'See Results →';
+  } else {
+    nextBtn.textContent = 'Continue →';
+  }
+
+  const html = `
+    <div class="question-card">
+      <div class="question-category">${q.category}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options-grid">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectAnswer(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span class="option-text">${opt.text}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('questionArea').innerHTML = html;
+}
+
+function selectAnswer(idx) {
+  answers[currentQ] = idx;
+  renderQuestion();
+  // Auto-advance slightly
+  setTimeout(() => {
+    const nextBtn = document.getElementById('btnNext');
+    nextBtn.classList.add('active');
+  }, 50);
+}
+
+function nextQuestion() {
+  if (answers[currentQ] === null) return;
+  if (currentQ === questions.length - 1) {
+    showResults();
+    return;
+  }
+  currentQ++;
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevQuestion() {
+  if (currentQ === 0) return;
+  currentQ--;
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==================== RESULTS ====================
+
+const schools = [
+  {
+    name: "Classical Liberal",
+    desc: "You follow in the tradition of Smith, Hume, and Mill — free markets, rule of law, limited government, and individual rights as the foundation of prosperity.",
+    tagline: "The invisible hand guides better than any planner.",
+    weights: { market: 3, individual: 2, tradition: 1, growth: 1, nation: -1 }
+  },
+  {
+    name: "Libertarian / Anarcho-Capitalist",
+    desc: "Your thinking aligns with Mises, Hayek, and Rothbard. Taxation is coercion, the state is the problem, and voluntary exchange and private property are the only moral foundations of society.",
+    tagline: "The state offers no service that voluntary cooperation cannot.",
+    weights: { market: 3, individual: 3, tradition: 0, growth: 1, nation: -3 }
+  },
+  {
+    name: "Keynesian / Social Democrat",
+    desc: "You see markets as powerful but incomplete. With Keynes, you believe aggregate demand matters, government investment is sometimes necessary, and a strong safety net is compatible with prosperity.",
+    tagline: "In the long run, we are all dead — act now.",
+    weights: { market: -1, individual: 0, tradition: -1, growth: 2, nation: 1 }
+  },
+  {
+    name: "Marxist / Democratic Socialist",
+    desc: "Capital accumulates, workers are exploited, and the system reproduces inequality by design. You believe in worker ownership, strong unions, and eventually abolishing wage labor.",
+    tagline: "The history of all societies is the history of class struggle.",
+    weights: { market: -3, individual: 1, tradition: -2, growth: -1, nation: 0 }
+  },
+  {
+    name: "Nationalist / Third Positionist",
+    desc: "Neither Marxism nor liberal capitalism — you prioritize national sovereignty, cultural continuity, and economic policies that serve the organic community rather than global markets or ideological abstractions.",
+    tagline: "Economy serves nation. Nation serves people.",
+    weights: { market: -1, individual: 0, tradition: 3, growth: 1, nation: 3 }
+  },
+  {
+    name: "Georgist / Land Value Tax",
+    desc: "Following Henry George, you believe the root of economic injustice is rent — unearned income from land and natural resources. Tax land entirely, not labor or production.",
+    tagline: "The earth belongs to all; its improvements to those who create them.",
+    weights: { market: 1, individual: 2, tradition: 0, growth: 0, nation: 1 }
+  },
+  {
+    name: "Distributist / Catholic Social",
+    desc: "Rooted in Chesterton, Belloc, and Catholic social teaching — you believe property should be widely distributed, not concentrated. Neither capitalism nor socialism, but a society of owners.",
+    tagline: "The problem with capitalism is too few capitalists.",
+    weights: { market: 0, individual: 1, tradition: 3, growth: -1, nation: 2 }
+  },
+  {
+    name: "Developmentalist / Industrial Nationalist",
+    desc: "Inspired by List, Hamilton, Park Chung-hee, and the East Asian Tigers — you believe strategic state direction, infant industry protection, and national champions are the real path to development.",
+    tagline: "Free trade is the creed of the strong. Protection is the policy of the wise.",
+    weights: { market: -1, individual: -1, tradition: 1, growth: 3, nation: 3 }
+  },
+  {
+    name: "Ecological / Post-Growth",
+    desc: "GDP is a broken metric and endless growth on a finite planet is impossible. You draw on Daly, Schumacher, and degrowth thinkers — an economy that serves well-being, not extraction.",
+    tagline: "Small is beautiful. Enough is a feast.",
+    weights: { market: -2, individual: 1, tradition: 1, growth: -3, nation: 1 }
+  },
+  {
+    name: "Market Socialist",
+    desc: "You believe in competition and decentralization, but within firms that are worker-owned. Think Josip Broz Tito, or the Mondragon cooperatives — combining market efficiency with labor ownership.",
+    tagline: "Markets without bosses.",
+    weights: { market: 1, individual: 2, tradition: -1, growth: 1, nation: 0 }
+  }
+];
+
+function computeScores() {
+  const axes = { market: 0, individual: 0, tradition: 0, growth: 0, nation: 0 };
+  
+  answers.forEach((answerIdx, qIdx) => {
+    if (answerIdx === null) return;
+    const opt = questions[qIdx].options[answerIdx];
+    Object.keys(opt.axes).forEach(ax => {
+      axes[ax] += opt.axes[ax];
+    });
+  });
+  
+  return axes;
+}
+
+function matchSchool(axes) {
+  let bestSchool = null;
+  let bestScore = -Infinity;
+  
+  schools.forEach(school => {
+    let score = 0;
+    Object.keys(school.weights).forEach(ax => {
+      // Dot product - alignment
+      score += school.weights[ax] * axes[ax];
+    });
+    if (score > bestScore) {
+      bestScore = score;
+      bestSchool = school;
+    }
+  });
+  
+  return bestSchool;
+}
+
+function getSchoolAffinities(axes) {
+  return schools.map(school => {
+    let score = 0;
+    Object.keys(school.weights).forEach(ax => {
+      score += school.weights[ax] * axes[ax];
+    });
+    return { name: school.name, score };
+  }).sort((a, b) => b.score - a.score);
+}
+
+function normalizeAxis(value, min, max) {
+  // Normalize to 0-100
+  return Math.round(((value - min) / (max - min)) * 100);
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  const axes = computeScores();
+  const best = matchSchool(axes);
+  const affinities = getSchoolAffinities(axes);
+  
+  document.getElementById('resultTitle').textContent = best.name;
+  document.getElementById('resultTagline').textContent = '"' + best.tagline + '"';
+  document.getElementById('resultDesc').textContent = best.desc;
+  
+  // Axes display
+  // Each axis ranges roughly -30 to +30 (18 questions, max ~3 per question)
+  const axisMax = 30;
+  const axisMin = -30;
+  
+  const axisConfig = [
+    { key: 'market', left: 'Central Planning', right: 'Free Market', name: 'Economic Structure' },
+    { key: 'individual', left: 'Collectivism', right: 'Individualism', name: 'Social Organization' },
+    { key: 'tradition', left: 'Progressive', right: 'Traditionalist', name: 'Values & Culture' },
+    { key: 'growth', left: 'Degrowth', right: 'Accelerationist', name: 'Growth & Technology' },
+    { key: 'nation', left: 'Globalist', right: 'Nationalist', name: 'Sovereignty & Scale' }
+  ];
+  
+  let axesHtml = '';
+  axisConfig.forEach(ax => {
+    const val = axes[ax.key];
+    const pct = normalizeAxis(val, axisMin, axisMax);
+    const leftActive = pct < 40 ? 'active' : '';
+    const rightActive = pct > 60 ? 'active' : '';
+    
+    axesHtml += `
+      <div class="axis-row">
+        <div class="axis-name">${ax.name}</div>
+        <div class="axis-labels">
+          <span class="axis-label-left ${leftActive}">${ax.left}</span>
+          <span class="axis-label-right ${rightActive}">${ax.right}</span>
+        </div>
+        <div class="axis-track">
+          <div class="axis-fill" style="width:0%" data-target="${pct}"></div>
+          <div class="axis-dot" style="left:0%" data-target="${pct}%"></div>
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('axesDisplay').innerHTML = axesHtml;
+  
+  // Animate axes after a short delay
+  setTimeout(() => {
+    document.querySelectorAll('.axis-fill').forEach(el => {
+      el.style.width = el.dataset.target + '%';
+    });
+    document.querySelectorAll('.axis-dot').forEach(el => {
+      el.style.left = el.dataset.target;
+    });
+  }, 200);
+  
+  // Schools affinity
+  const topAffinities = affinities.slice(0, 6);
+  const maxAffinity = topAffinities[0].score;
+  
+  let schoolsHtml = '';
+  topAffinities.forEach(s => {
+    const pct = maxAffinity > 0 ? Math.max(0, Math.round((s.score / maxAffinity) * 100)) : 0;
+    schoolsHtml += `
+      <div class="school-bar-item">
+        <div class="school-bar-name">${s.name}</div>
+        <div class="school-bar-track">
+          <div class="school-bar-fill" style="width:0%" data-target="${pct}%"></div>
+        </div>
+        <div class="school-bar-pct">${pct}% affinity</div>
+      </div>
+    `;
+  });
+  document.getElementById('schoolsGrid').innerHTML = schoolsHtml;
+  
+  setTimeout(() => {
+    document.querySelectorAll('.school-bar-fill').forEach(el => {
+      el.style.width = el.dataset.target;
+    });
+  }, 400);
+}
+
+function retake() {
+  currentQ = 0;
+  answers = new Array(questions.length).fill(null);
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('intro').style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
